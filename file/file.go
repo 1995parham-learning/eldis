@@ -71,7 +71,7 @@ func (t TextFile) Search(key string) string {
 	return ""
 }
 
-func (t TextFile) binarySearch(key string, f *os.File) string {
+func (t TextFile) binarySearch(key string, f io.Reader) string {
 	low := 0
 	high := t.Threshold - 1
 
@@ -83,14 +83,15 @@ func (t TextFile) binarySearch(key string, f *os.File) string {
 			log.Fatal(err)
 		}
 		kv := strings.Split(line, " ")
+
 		k := kv[0]
 		v := kv[1]
 
-		if k == key{
+		if k == key {
 			return v
-		}else if k < key {
+		} else if k < key {
 			low = middle + 1
-		}else {
+		} else {
 			high = middle - 1
 		}
 
