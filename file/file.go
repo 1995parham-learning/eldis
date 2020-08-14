@@ -1,6 +1,8 @@
 package file
 
 import (
+	"bufio"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -16,6 +18,7 @@ type File interface {
 }
 
 type TextFile struct {
+	Threshold int
 }
 
 func (t TextFile) Flush(m map[string]string, s []string) {
@@ -51,35 +54,35 @@ func (t TextFile) Search(key string) string {
 	sort.Strings(fileNames)
 
 	for i := len(fileNames) - 1; i >= 0; i-- {
-		data, err := ioutil.ReadFile("./foo/" + fileNames[i])
+		f, err := os.Open("./foo/" + fileNames[i])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		textData := string(data)
+		result := t.binarySearch(key, f)
 
-		lines := strings.Split(textData, "\n")
-
-		for _, line := range lines {
-			keyValue := strings.Split(line, " ")
-			if keyValue[0] == key {
-				return keyValue[1]
-			}
+		if result != "" {
+			return result
 		}
 
+		f.Close()
 	}
 
 	return ""
 }
 
-func binarySearch(key string, lines []string) string {
+func (t TextFile) binarySearch(key string, f *os.File) string {
 	low := 0
-	high := len(lines) - 1
+	high := t.Threshold - 1
 
 	for {
 		middle := (low + high) / 2
 
-		kv := strings.Split(lines[middle], " ")
+		line, _, err := readLine(f, middle)
+		if err != nil {
+			log.Fatal(err)
+		}
+		kv := strings.Split(line, " ")
 		k := kv[0]
 		v := kv[1]
 
@@ -95,4 +98,16 @@ func binarySearch(key string, lines []string) string {
 			return ""
 		}
 	}
+}
+
+func readLine(r io.Reader, lineNum int) (line string, lastLine int, err error) {
+	sc := bufio.NewScanner(r)
+	for sc.Scan() {
+		lastLine++
+		if lastLine == lineNum {
+			return sc.Text(), lastLine, sc.Err()
+		}
+	}
+
+	return line, lastLine, io.EOF
 }

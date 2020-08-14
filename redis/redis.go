@@ -17,7 +17,7 @@ func New(th int) Redis {
 		Threshold:  th,
 		Memory:     make(map[string]string),
 		StoredKeys: make([]string, th),
-		File:       file.TextFile{},
+		File:       file.TextFile{Threshold: th},
 	}
 }
 
