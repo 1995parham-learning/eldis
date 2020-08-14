@@ -28,6 +28,7 @@ func main() {
 		if commands[0] == command.SET {
 			if err := redis.SetValidation(commands); err != nil {
 				fmt.Println(err.Error())
+
 				continue
 			}
 
@@ -35,6 +36,7 @@ func main() {
 		} else if commands[0] == command.GET {
 			if err := redis.GetValidation(commands); err != nil {
 				fmt.Println(err.Error())
+
 				continue
 			}
 

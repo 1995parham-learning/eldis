@@ -5,6 +5,8 @@ import (
 	"errors"
 )
 
+var ErrSetCommandArgs = "SET command takes 2 arguments"
+
 type Redis struct {
 	Threshold  int
 	Memory     map[string]string
@@ -43,7 +45,7 @@ func (r *Redis) Get(key string) string {
 
 func SetValidation(commands []string) error {
 	if len(commands) != 3 {
-		return errors.New("SET command takes 2 arguments")
+		return errors.New(ErrSetCommandArgs)
 	}
 
 	if !(len(commands[1]) == len(commands[2]) && len(commands[1]) == 8) {
@@ -55,7 +57,7 @@ func SetValidation(commands []string) error {
 
 func GetValidation(commands []string) error {
 	if len(commands) != 2 {
-		return errors.New("SET command takes 1 argument")
+		return errors.New("GET command takes 1 argument")
 	}
 
 	if len(commands[1]) != 8 {
