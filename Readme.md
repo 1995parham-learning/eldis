@@ -6,4 +6,6 @@ search for a value it first searches the memory then the latest file and so on.
 
 # Search
 How to understand which file is newer and which one older?<br/>
-I used time at the end of the file name.
+I used time at the end of the file name.<br/>
+What if the file is too big?<br/>
+For better performance I don't read whole the file I use binary search to read lines.<br/>
