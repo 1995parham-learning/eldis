@@ -58,5 +58,9 @@ func GetValidation(commands []string) error {
 		return errors.New("SET command takes 1 argument")
 	}
 
+	if len(commands[1]) != 8 {
+		return errors.New("key should be 8 characters")
+	}
+
 	return nil
 }
