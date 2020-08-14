@@ -1,30 +1,34 @@
 package redis
 
 import (
-	"cafeBazarInterview/file"
+	"eldis/file"
 	"errors"
 )
 
 type Redis struct {
-	Threshold int
-	Memory    map[string]string
-	File      file.File
+	Threshold  int
+	Memory     map[string]string
+	StoredKeys []string
+	File       file.File
 }
 
 func New(th int) Redis {
 	return Redis{
-		Threshold: th,
-		Memory:    make(map[string]string),
-		File:      file.TextFile{},
+		Threshold:  th,
+		Memory:     make(map[string]string),
+		StoredKeys: make([]string, th),
+		File:       file.TextFile{},
 	}
 }
 
 func (r *Redis) Set(key string, value string) {
+	r.StoredKeys[len(r.Memory)] = key
 	r.Memory[key] = value
 
 	if len(r.Memory) == r.Threshold {
-		r.File.Flush(r.Memory)
+		r.File.Flush(r.Memory, r.StoredKeys)
 		r.Memory = make(map[string]string)
+		r.StoredKeys = make([]string, r.Threshold)
 	}
 }
 

@@ -11,14 +11,14 @@ import (
 )
 
 type File interface {
-	Flush(map[string]string)
+	Flush(map[string]string, []string)
 	Search(string) string
 }
 
 type TextFile struct {
 }
 
-func (t TextFile) Flush(m map[string]string) {
+func (t TextFile) Flush(m map[string]string, s []string) {
 	f, err := os.Create("foo/redis" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
 	if err != nil {
 		log.Fatal(err)
@@ -26,8 +26,10 @@ func (t TextFile) Flush(m map[string]string) {
 
 	defer f.Close()
 
-	for k, v := range m {
-		_, err := f.WriteString(k + " " + v + "\n")
+	sort.Strings(s)
+
+	for _, k := range s {
+		_, err := f.WriteString(k + " " + m[k] + "\n")
 		if err != nil {
 			log.Fatal(err)
 		}

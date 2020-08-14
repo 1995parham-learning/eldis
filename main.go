@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"cafeBazarInterview/command"
-	"cafeBazarInterview/redis"
+	"eldis/command"
+	"eldis/redis"
 	"fmt"
 	"log"
 	"os"
