@@ -71,3 +71,28 @@ func (t TextFile) Search(key string) string {
 
 	return ""
 }
+
+func binarySearch(key string, lines []string) string {
+	low := 0
+	high := len(lines) - 1
+
+	for {
+		middle := (low + high) / 2
+
+		kv := strings.Split(lines[middle], " ")
+		k := kv[0]
+		v := kv[1]
+
+		if k == key{
+			return v
+		}else if k < key {
+			low = middle + 1
+		}else {
+			high = middle - 1
+		}
+
+		if low > high {
+			return ""
+		}
+	}
+}
