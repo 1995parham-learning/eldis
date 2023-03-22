@@ -1,11 +1,12 @@
 package redis
 
 import (
-	"eldis/file"
 	"errors"
+
+	"github.com/1995parham-learning/eldis/file"
 )
 
-var ErrSetCommandArgs = "SET command takes 2 arguments"
+var ErrSetCommandArgs = errors.New("SET command takes 2 arguments")
 
 type Redis struct {
 	Threshold  int
@@ -45,7 +46,7 @@ func (r *Redis) Get(key string) string {
 
 func SetValidation(commands []string) error {
 	if len(commands) != 3 {
-		return errors.New(ErrSetCommandArgs)
+		return ErrSetCommandArgs
 	}
 
 	if !(len(commands[1]) == len(commands[2]) && len(commands[1]) == 8) {
