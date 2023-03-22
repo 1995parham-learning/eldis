@@ -3,7 +3,6 @@ package file
 import (
 	"bufio"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"sort"
@@ -12,7 +11,11 @@ import (
 	"time"
 )
 
+// File interface is used for flushing data from memory to file.
 type File interface {
+	// Flush writes given keys from memory into file.
+	// it should write keys in a sorted order so we can
+	// use binary search for finding a key.
 	Flush(map[string]string, []string)
 	Search(string) string
 }
@@ -22,7 +25,7 @@ type TextFile struct {
 }
 
 func (t TextFile) Flush(m map[string]string, s []string) {
-	f, err := os.Create("foo/redis" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
+	f, err := os.Create("storage/redis" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,7 +43,7 @@ func (t TextFile) Flush(m map[string]string, s []string) {
 }
 
 func (t TextFile) Search(key string) string {
-	files, err := ioutil.ReadDir("./foo")
+	files, err := os.ReadDir("storage")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +57,7 @@ func (t TextFile) Search(key string) string {
 	sort.Strings(fileNames)
 
 	for i := len(fileNames) - 1; i >= 0; i-- {
-		f, err := os.Open("./foo/" + fileNames[i])
+		f, err := os.Open("storage/" + fileNames[i])
 		if err != nil {
 			log.Fatal(err)
 		}
