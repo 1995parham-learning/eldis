@@ -1,8 +1,8 @@
-# The Elahe's Redis implementation
+# The Elahe's Redis implementation (Eldis)
 
 ## Introduction
 
-There are two commands "GET" and "SET". "SET" command gets a key, and it's value and puts them in
+Eldis has two commands named "GET" and "SET". "SET" command gets a key, and it's value and puts them in
 the memory as you can guess the "GET" method get a key and returns its related value.
 
 There is a threshold for memory and
