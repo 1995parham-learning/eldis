@@ -1,4 +1,5 @@
-# The Elahe's Redis implementation (Eldis)
+<h1 align="center">The Elahe's Redis implementation (Eldis)</h1>
+<h6 align="center">Eldis means "old"</h6>
 
 ## Introduction
 
