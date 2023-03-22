@@ -2,12 +2,13 @@ package main
 
 import (
 	"bufio"
-	"eldis/command"
-	"eldis/redis"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/1995parham-learning/eldis/internal/command"
+	"github.com/1995parham-learning/eldis/internal/redis"
 )
 
 func main() {
