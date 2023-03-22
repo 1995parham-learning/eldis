@@ -1,12 +1,8 @@
 package redis
 
 import (
-	"errors"
-
-	"github.com/1995parham-learning/eldis/file"
+	"github.com/1995parham-learning/eldis/internal/file"
 )
-
-var ErrSetCommandArgs = errors.New("SET command takes 2 arguments")
 
 type Redis struct {
 	Threshold  int
@@ -42,28 +38,4 @@ func (r *Redis) Get(key string) string {
 	}
 
 	return r.File.Search(key)
-}
-
-func SetValidation(commands []string) error {
-	if len(commands) != 3 {
-		return ErrSetCommandArgs
-	}
-
-	if !(len(commands[1]) == len(commands[2]) && len(commands[1]) == 8) {
-		return errors.New("key and value should be 8 characters")
-	}
-
-	return nil
-}
-
-func GetValidation(commands []string) error {
-	if len(commands) != 2 {
-		return errors.New("GET command takes 1 argument")
-	}
-
-	if len(commands[1]) != 8 {
-		return errors.New("key should be 8 characters")
-	}
-
-	return nil
 }
