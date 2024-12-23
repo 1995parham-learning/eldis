@@ -38,42 +38,44 @@ func Parse(input string) (Command, error) {
 
 	switch args[0] {
 	case SET:
-		if err := SetValidation(args); err != nil {
+		cmd, err := NewSet(args)
+		if err != nil {
 			return nil, err
 		}
 
-		return Set{Key: args[1], Value: args[2]}, nil
+		return cmd, nil
 	case GET:
-		if err := GetValidation(args); err != nil {
+		cmd, err := NewGet(args)
+		if err != nil {
 			return nil, err
 		}
 
-		return Get{Key: args[1]}, nil
+		return cmd, nil
 	}
 
 	return nil, ErrCommandNotFound
 }
 
-func SetValidation(args []string) error {
+func NewSet(args []string) (Set, error) {
 	if len(args) != SetCommandArgs {
-		return ErrSetCommandArgs
+		return Set{}, ErrSetCommandArgs
 	}
 
 	if len(args[1]) != len(args[2]) || len(args[1]) != Len {
-		return ErrKeyValueLen
+		return Set{}, ErrKeyValueLen
 	}
 
-	return nil
+	return Set{Key: args[1], Value: args[2]}, nil
 }
 
-func GetValidation(args []string) error {
+func NewGet(args []string) (Get, error) {
 	if len(args) != GetCommandArgs {
-		return ErrGetCommandArgs
+		return Get{}, ErrGetCommandArgs
 	}
 
 	if len(args[1]) != Len {
-		return ErrKeyValueLen
+		return Get{}, ErrKeyValueLen
 	}
 
-	return nil
+	return Get{Key: args[1]}, nil
 }
